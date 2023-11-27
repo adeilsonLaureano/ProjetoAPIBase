@@ -1,7 +1,6 @@
 package br.com.criandoapi.projeto.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.criandoapi.projeto.DAO.IUsuario;
 import br.com.criandoapi.projeto.model.Usuario;
+import br.com.criandoapi.projeto.repository.IUsuario;
+import br.com.criandoapi.projeto.service.UsuarioService;
 
 @RestController
 @CrossOrigin("*")
@@ -25,16 +25,20 @@ public class UsuarioController {
     @Autowired
     private IUsuario dao;
 
+    private UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
     @GetMapping
     public ResponseEntity<List<Usuario>> listarUsuarios() {
-        List<Usuario> lista = (List<Usuario>) dao.findAll();
-        return ResponseEntity.status(200).body(lista);
+        return ResponseEntity.status(200).body(usuarioService.listarUsuario());
     }
 
     @PostMapping
     public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
-        Usuario usuarioNovo = dao.save(usuario);
-        return ResponseEntity.status(201).body(usuarioNovo);
+        return ResponseEntity.status(201).body(usuarioService.criarUsuario(usuario));
     }
 
     @PutMapping
