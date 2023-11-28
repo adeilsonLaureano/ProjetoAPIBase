@@ -2,6 +2,7 @@ package br.com.criandoapi.projeto.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,5 +47,15 @@ public class UsuarioController {
     public ResponseEntity<?> deletarUsuario(@PathVariable Integer id) {
         usuarioService.deletarUsuario(id);
         return ResponseEntity.status(204).build();
+    }
+
+    //teste login
+    @PostMapping("/login")
+    public ResponseEntity<Usuario> validarSenha(@RequestBody Usuario usuario) {
+        Boolean valid = usuarioService.validarSenha(usuario);
+        if(!valid) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.status(200).build();
     }
 }
