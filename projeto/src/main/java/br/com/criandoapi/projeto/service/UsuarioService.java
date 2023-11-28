@@ -41,10 +41,16 @@ public class UsuarioService {
     }
 
     public Boolean validarSenha(Usuario usuario) {
+        // Obtém a senha armazenada no banco de dados para o usuário fornecido
         String senha = repository.getReferenceById(usuario.getId()).getSenha();
+        
+        // Verifica se a senha fornecida pelo usuário corresponde à senha armazenada no banco de dados
         Boolean valid = passwordEncoder.matches(usuario.getSenha(), senha);
+        
+        // Retorna se as senhas correspondem
         return valid;
     }
+    
 
     
     
